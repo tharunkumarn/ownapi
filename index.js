@@ -30,10 +30,44 @@ app.get("/filter",(req,res)=>{
 
 
 //4. POST a new joke
+app.post("/jokes",(req,res)=>{
+  const newjokes = {
+   id:jokes.length+1,
+   jokeText: req.body.text,
+   jokeType: req.body.type
+  }
+  jokes.push(newjokes);
+  console.log(jokes.slice(-1));
+  res.json(newjokes);
+})
 
-//5. PUT a joke
+//Put a joke
+app.put("/jokes/:id",(req,res)=>{
+  const jokeId = parseInt(req.params.id)
+  const replacejokes ={
+    id:jokeId,
+    jokeText:req.body.text,
+    jokeType:req.body.type
+  }
+  const jokeindex = jokes.findIndex(tharun => tharun.id ===jokeId);
+  jokes[jokeindex] = replacejokes;
+  res.json(replacejokes);
+});
 
 //6. PATCH a joke
+app.patch("/jokes/:id",(req,res)=>{
+const id = parseInt(req.params.id);
+const exestingjoke = jokes.find((joke)=> joke.id === id);
+const updatejokes ={
+  id:id,
+  jokeText:req.body.text || exestingjoke.jokeText,
+  jokeType:req.body.type || exestingjoke.jokeType,
+}
+  const expected_index = jokes.findIndex((joke)=> joke.id === id);
+  jokes[expected_index]=updatejokes;
+  res.json(updatejokes);
+
+});
 
 //7. DELETE Specific joke
 
