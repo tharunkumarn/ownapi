@@ -70,8 +70,34 @@ const updatejokes ={
 });
 
 //7. DELETE Specific joke
+app.delete("/jokes/:id",(req,res)=>{
+  const id = req.params.id;
+  const index = jokes.findIndex(joke => joke.id == id);
+  if (index > -1){
+     jokes.splice(index,1);
+     res.sendStatus(200);
+  }
+  else{
+    res
+    .status(404)
+    .json("jokes not found");
+  }
+});
 
 //8. DELETE All jokes
+
+app.delete("/all",(req,res)=>{
+const userkey = req.query.key;
+console.log(userkey);
+if(userkey === masterKey){
+  jokes = [];
+  res.sendStatus(200);
+}
+else{
+  res.json("auth failed")
+}
+
+});
 
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);
